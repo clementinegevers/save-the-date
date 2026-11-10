@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Save the date</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   ✏️  Edit everything in the CONFIG block at the bottom of this file.
+   You shouldn't need to touch the CSS.
+   ========================================================= */
+:root{
+  --paper:#E6ECF1;      /* powder blue */
+  --card:#FBFBF8;
+  --ink:#1F2A44;        /* deep navy */
+  --soft:#5B6782;
+  --blush:#E7B7AE;
+  --brass:#A9813C;
+  --line:#C9D3DD;
+  --clue:#A26A5C;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#141B2C; --card:#1C2438; --ink:#EEF1F6; --soft:#A9B3C8;
+    --blush:#C98F86; --brass:#D2AA62; --line:#2E3850; --clue:#E0A090;
+    color-scheme: dark;
+  }
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-weight:300; line-height:1.6;
+}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important;transition:none!important} }
+
+.wrap{max-width:720px; margin:0 auto; padding:48px 20px 80px}
+.card{
+  background:var(--card); border:1px solid var(--line);
+  padding:clamp(28px,6vw,64px) clamp(20px,6vw,64px);
+  position:relative;
+}
+.card::before{ /* inner frame, like a printed invitation */
+  content:""; position:absolute; inset:10px; border:1px solid var(--line); pointer-events:none;
+}
+section + section{margin-top:64px}
+
+/* ---------- Hero ---------- */
+.hero{text-align:center}
+.kicker{font-size:1rem; letter-spacing:.06em; color:var(--soft); margin:0 0 20px}
+.names{
+  font-family:"Bodoni Moda",Didot,"Times New Roman",serif; font-weight:400;
+  font-size:clamp(2.4rem,10vw,5.2rem); line-height:.95; margin:0; overflow-wrap:break-word;
+}
+.names .amp{
+  display:block; font-style:italic; color:var(--blush);
+  font-size:.75em; line-height:1; margin:.05em 0;
+}
+.date-big{
+  font-family:"Bodoni Moda",serif; font-size:clamp(1.3rem,4vw,1.7rem);
+  margin:28px 0 4px;
+}
+.place{color:var(--soft); margin:0}
+
+/* ---------- Rings ---------- */
+.rings{display:flex; justify-content:center; margin:36px 0 0; height:70px}
+.ring{
+  width:70px; height:70px; background:none; border:0; padding:0; cursor:pointer;
+  color:var(--brass); transition:transform .5s cubic-bezier(.3,1.4,.5,1), opacity .5s, width .5s;
+}
+.ring:focus-visible{outline:2px solid var(--brass); outline-offset:4px; border-radius:50%}
+.ring svg{width:100%; height:100%}
+#ring2{width:0; opacity:0; transform:scale(.3)}
+.rings.double #ring1{transform:translateX(10px)}
+.rings.double #ring2{width:70px; opacity:1; transform:translateX(-10px) scale(1)}
+
+/* ---------- Countdown ---------- */
+.countdown{
+  display:grid; grid-template-columns:repeat(4,1fr); max-width:440px; margin:0 auto;
+  text-align:center;
+}
+.countdown div{border-left:1px solid var(--line)}
+.countdown div:first-child{border-left:0}
+.countdown b{display:block; font-family:"Bodoni Moda",serif; font-weight:400; font-size:clamp(1.8rem,7vw,2.6rem); line-height:1.1; font-variant-numeric:tabular-nums}
+.countdown span{font-size:.85rem; color:var(--soft)}
+.countdown.glitch b{color:var(--clue); filter:blur(.4px); transform:skewX(-6deg)}
+.until{text-align:center; color:var(--soft); font-size:.95rem; margin:10px 0 0}
+
+/* ---------- Story ---------- */
+h2{
+  font-family:"Bodoni Moda",serif; font-weight:400; font-style:italic;
+  font-size:clamp(1.6rem,5vw,2.1rem); text-align:center; margin:0 0 20px;
+}
+.story{
+  font-family:"Bodoni Moda",serif; font-size:1.12rem; line-height:1.85;
+  max-width:34em; margin:0 auto; text-align:left;
+}
+.story p{margin:0 0 1em}
+.story p::first-letter{font-size:1.6em; line-height:1; color:var(--brass); padding-right:.04em}
+.story-hint{
+  max-width:34em; margin:24px auto 0; padding-top:18px; border-top:1px solid var(--line);
+  text-align:center; font-style:italic; color:var(--soft);
+}
+
+/* ---------- Details ---------- */
+.details{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:28px 32px; text-align:center}
+.details h3{font-family:"Bodoni Moda",serif; font-weight:400; font-size:1.25rem; margin:0 0 6px}
+.details p{margin:0; color:var(--soft)}
+
+/* ---------- RSVP code ---------- */
+.rsvp{text-align:center}
+.rsvp p{color:var(--soft); margin:0 auto 18px; max-width:30em}
+.code-row{display:flex; gap:10px; max-width:380px; margin:0 auto; flex-wrap:wrap; justify-content:center}
+.code-row input{
+  flex:1 1 200px; min-width:0; padding:12px 14px; font:inherit; font-size:1.05rem; letter-spacing:.15em; text-align:center;
+  background:transparent; color:var(--ink); border:1px solid var(--soft); border-radius:2px; text-transform:uppercase;
+}
+.code-row input:focus-visible{outline:2px solid var(--brass); outline-offset:2px}
+.code-row button{
+  padding:12px 22px; font:inherit; font-weight:500; cursor:pointer;
+  background:var(--ink); color:var(--card); border:0; border-radius:2px;
+}
+.code-row button:focus-visible{outline:2px solid var(--brass); outline-offset:3px}
+.msg{min-height:1.6em; margin-top:12px; font-size:.95rem; color:var(--clue)}
+
+/* ---------- Footer ---------- */
+footer{text-align:center; margin-top:40px; color:var(--soft); font-size:.9rem}
+.ps{font-size:.66rem; opacity:.55; margin-top:14px; display:inline-block}
+
+/* ---------- Reveal ---------- */
+.reveal{
+  position:fixed; inset:0; z-index:40; display:none; place-items:center; padding:24px;
+  background:var(--ink); color:var(--card); text-align:center; overflow:auto;
+}
+.reveal.show{display:grid; animation:fade .6s ease}
+@keyframes fade{from{opacity:0}}
+.reveal .stamp{
+  display:inline-block; border:2px solid var(--blush); color:var(--blush); padding:6px 16px;
+  transform:rotate(-6deg); font-family:"Bodoni Moda",serif; font-style:italic; font-size:1.4rem; margin-bottom:28px;
+}
+.reveal h2{color:var(--card); font-style:normal; font-size:clamp(1.3rem,4vw,1.7rem); margin-bottom:10px}
+.reveal .big{
+  font-family:"Bodoni Moda",serif; font-size:clamp(2.6rem,11vw,5.5rem); line-height:1; margin:18px 0;
+}
+.reveal .big i{color:var(--blush)}
+.reveal p{max-width:30em; margin:0 auto 10px; opacity:.85}
+.reveal button{
+  margin-top:28px; font:inherit; background:transparent; color:var(--card);
+  border:1px solid currentColor; padding:10px 20px; cursor:pointer; border-radius:2px;
+}
+#confetti{position:fixed; inset:0; z-index:50; pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <main class="card">
+
+    <section class="hero">
+      <p class="kicker">Please save the date for the wedding of</p>
+      <h1 class="names"><span id="n1"></span><span class="amp">&amp;</span><span id="n2"></span></h1>
+      <p class="date-big" id="dateText"></p>
+      <p class="place" id="placeText"></p>
+
+      <div class="rings" id="rings">
+        <button class="ring" id="ring1" aria-label="Ring">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="60" r="26" fill="none" stroke="currentColor" stroke-width="5"/><path d="M40 33 L50 20 L60 33 Z" fill="currentColor" opacity=".8"/></svg>
+        </button>
+        <button class="ring" id="ring2" aria-label="A second ring" tabindex="-1">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="60" r="26" fill="none" stroke="currentColor" stroke-width="5"/><path d="M40 33 L50 20 L60 33 Z" fill="currentColor" opacity=".8"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section aria-label="Countdown">
+      <div class="countdown" id="countdown">
+        <div><b id="cd-d">0</b><span>days</span></div>
+        <div><b id="cd-h">0</b><span>hours</span></div>
+        <div><b id="cd-m">0</b><span>minutes</span></div>
+        <div><b id="cd-s">0</b><span>seconds</span></div>
+      </div>
+      <p class="until" id="until"></p>
+    </section>
+
+    <section>
+      <h2>Our story</h2>
+      <div class="story" id="story"></div>
+      <p class="story-hint" id="storyHint"></p>
+    </section>
+
+    <section>
+      <h2>The details</h2>
+      <div class="details">
+        <div><h3>When</h3><p id="dWhen"></p></div>
+        <div><h3>Where</h3><p id="dWhere"></p></div>
+        <div><h3>Dress code</h3><p id="dDress"></p></div>
+        <div><h3>What to bring</h3><p>Tissues. Better make it two packs.</p></div>
+      </div>
+    </section>
+
+    <section class="rsvp">
+      <h2>Your invitation code</h2>
+      <p>Every guest has a code, and yours is hidden in our story. Enter it to confirm you’ve received this save the date.</p>
+      <div class="code-row">
+        <input id="code" type="text" autocomplete="off" spellcheck="false" aria-label="Invitation code" placeholder="Your code">
+        <button id="checkCode">Confirm</button>
+      </div>
+      <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div id="footSig"></div>
+    <span class="ps" id="ps"></span>
+  </footer>
+</div>
+
+<!-- The big reveal -->
+<div class="reveal" id="reveal" role="dialog" aria-modal="true" aria-labelledby="revealTitle">
+  <div>
+    <div class="stamp">Encore !</div>
+    <h2 id="revealTitle"></h2>
+    <div class="big" id="revealNames"></div>
+    <p id="revealDate"></p>
+    <p id="revealNote"></p>
+    <button id="closeReveal">Back to the save the date</button>
+  </div>
+</div>
+<canvas id="confetti"></canvas>
+
+<script>
+/* =========================================================
+   ✏️  CONFIG — edit this part only
+   ========================================================= */
+const CONFIG = {
+  // Your sister's wedding (the "official" save the date)
+  sister: {
+    name1: "Anne-Héloïse",
+    name2: "Farhad",
+    date: "2027-07-24T16:00:00",           // used by the countdown only
+    dateText: "Saturday, July 24, 2027",
+    venue: "",                              // add the venue name later if you like
+    city: "Brussels, Belgium",
+    dressCode: "Garden formal"
+  },
+
+  // YOUR engagement (the secret)
+  me: {
+    name1: "Clémentine",
+    name2: "Louis",
+    date: "",                               // optional, e.g. "2028-06-17T15:00:00" — leave "" if no date yet
+    dateText: "Date to be announced… ",
+    note: "Thank you for being a good inspector."
+  },
+
+  // The secret code. The FIRST LETTER of each story paragraph spells it, in order.
+  secretWord: "ENCORE",
+
+  // One paragraph per letter of the code: E · N · C · O · R · E
+  // If you rewrite them, keep each paragraph starting with the right letter.
+  story: [
+    "Every great love story needs a first scene. For Anne-Héloïse and Farhad, it was a rainy Tuesday in a bookshop, both reaching for the last copy of the same novel.",
+    "Neither of them let go. They ended up sharing it, then a coffee, then a dinner, then the next seven years.",
+    "Côte à côte ever since, they have become a real team: on holidays, in the kitchen, and above all on the tennis court.",
+    "On that very court, last spring, Farhad served the question of his life. Anne-Héloïse returned it before he could even finish: yes. Game, set and match.",
+    "Rackets down, glasses up: we can’t wait to celebrate with you in Brussels.",
+    "Eagle-eyed guests might already suspect it: maybe this won’t be the only good news this year."
+  ],
+
+  // Shown right after the story, so guests know how to find the code.
+  storyHint: "🔍 Psst… this page is full of hints. Each paragraph of our story gives you one letter of your invitation code.",
+
+  signature: "With love, the family 💛",
+  footerClue: "P.S. Not everything on this page is about Anne-Héloïse & Farhad."
+};
+/* ========================================================= */
+
+const $ = id => document.getElementById(id);
+const S = CONFIG.sister, M = CONFIG.me;
+const place = [S.venue, S.city].filter(Boolean).join(", ");
+
+/* ---------- Fill in the content ---------- */
+$("n1").textContent = S.name1;
+$("n2").textContent = S.name2;
+$("dateText").textContent = S.dateText;
+$("placeText").textContent = place;
+$("dWhen").textContent = S.dateText;
+$("dWhere").textContent = place;
+$("dDress").textContent = S.dressCode;
+$("until").textContent = `until ${S.name1} & ${S.name2} say “I do”`;
+$("footSig").textContent = CONFIG.signature;
+$("ps").textContent = CONFIG.footerClue;
+$("storyHint").textContent = CONFIG.storyHint;
+
+/* ---------- The story: each paragraph's first letter is one letter of the code ---------- */
+CONFIG.story.forEach(text => {
+  const p = document.createElement("p");
+  p.textContent = text;
+  $("story").appendChild(p);
+});
+const norm = s => s.normalize("NFD").replace(/[^a-z]/gi, "").toLowerCase();
+const acrostic = norm(CONFIG.story.map(t => t.trim()[0]).join(""));
+if(acrostic !== norm(CONFIG.secretWord)){
+  console.warn(`The story spells "${acrostic.toUpperCase()}" but the code is "${CONFIG.secretWord}". Check the first letters of the paragraphs.`);
+}
+
+/* ---------- Little hints about the second engagement ---------- */
+// Click the ring three times → a second ring appears
+let ringClicks = 0;
+$("ring1").addEventListener("click", () => {
+  if(++ringClicks >= 3){ $("rings").classList.add("double"); $("ring2").tabIndex = 0; }
+});
+
+// The countdown sometimes flickers to the other date (or "??" if there's no date yet)
+function parts(ms){
+  ms = Math.max(0, ms);
+  return [Math.floor(ms/864e5), Math.floor(ms/36e5)%24, Math.floor(ms/6e4)%60, Math.floor(ms/1e3)%60];
+}
+let glitching = false;
+function tick(){
+  let target = new Date(S.date).getTime();
+  if(glitching){
+    if(M.date){ target = new Date(M.date).getTime(); }
+    else { ["cd-d","cd-h","cd-m","cd-s"].forEach(id => $(id).textContent = "??"); return; }
+  }
+  const [d,h,m,s] = parts(target - Date.now());
+  $("cd-d").textContent = d; $("cd-h").textContent = h; $("cd-m").textContent = m; $("cd-s").textContent = s;
+}
+setInterval(tick, 1000); tick();
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+setInterval(() => {
+  glitching = true; $("countdown").classList.add("glitch"); tick();
+  setTimeout(() => { glitching = false; $("countdown").classList.remove("glitch"); tick(); }, reduced ? 1500 : 700);
+}, 9000);
+
+// The tab title changes when you switch tabs
+const baseTitle = `Save the date · ${S.name1} & ${S.name2}`;
+document.title = baseTitle;
+document.addEventListener("visibilitychange", () => {
+  if(!$("reveal").classList.contains("show")) document.title = document.hidden ? "Psst… look closer 🔍" : baseTitle;
+});
+
+// A message for the cousins who open the browser console
+console.log("%c🔍 A detective, I see.", "font-size:16px;font-weight:bold");
+console.log("This page hides more than one wedding. Read the first letters of the story…");
+
+/* ---------- The code check and the reveal ---------- */
+let wrong = 0;
+function checkCode(){
+  const val = norm($("code").value);
+  if(!val){ $("msg").textContent = "Type your code first."; return; }
+  if(val === norm(CONFIG.secretWord)){ $("msg").textContent = ""; reveal(); return; }
+  wrong++;
+  $("msg").textContent = wrong < 2
+    ? "That code doesn’t match. Read our story again, paragraph by paragraph."
+    : "Still not it. Hint: look at how each paragraph begins.";
+}
+$("checkCode").addEventListener("click", checkCode);
+$("code").addEventListener("keydown", e => { if(e.key === "Enter") checkCode(); });
+
+function reveal(){
+  $("revealTitle").textContent = "One wedding wasn’t enough.";
+  $("revealNames").innerHTML = `${M.name1} <i>&amp;</i> ${M.name2}`;
+  $("revealDate").textContent = `are engaged too! ${M.dateText}`;
+  $("revealNote").textContent = M.note;
+  $("reveal").classList.add("show");
+  $("closeReveal").focus();
+  document.title = `💍 ${M.name1} & ${M.name2} are engaged!`;
+  if(!reduced) confetti();
+}
+function closeReveal(){
+  $("reveal").classList.remove("show");
+  document.title = baseTitle;
+}
+$("closeReveal").addEventListener("click", closeReveal);
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && $("reveal").classList.contains("show")) closeReveal();
+});
+
+/* ---------- Confetti ---------- */
+function confetti(){
+  const c = $("confetti"), ctx = c.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  const colors = ["#E7B7AE","#D2AA62","#FBFBF8","#9DB4D0","#F3D9A4"];
+  const bits = Array.from({length:180}, () => ({
+    x: Math.random()*innerWidth, y: -20 - Math.random()*innerHeight*.6,
+    w: 6 + Math.random()*6, h: 8 + Math.random()*8,
+    vx: -1.5 + Math.random()*3, vy: 2 + Math.random()*3,
+    r: Math.random()*Math.PI, vr: -.15 + Math.random()*.3,
+    col: colors[Math.floor(Math.random()*colors.length)]
+  }));
+  const start = performance.now();
+  (function frame(t){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    bits.forEach(b => {
+      b.x += b.vx; b.y += b.vy; b.vy += .03; b.r += b.vr;
+      ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.r);
+      ctx.fillStyle = b.col; ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h); ctx.restore();
+    });
+    if(t - start < 6000) requestAnimationFrame(frame);
+    else ctx.clearRect(0,0,innerWidth,innerHeight);
+  })(start);
+}
+</script>
+</body>
+</html>
